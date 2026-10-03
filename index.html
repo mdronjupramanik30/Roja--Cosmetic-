@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">রোজা কসমেটিক - অনলাইন শপ</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        @keyframes pulse-fast {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+        }
+        .animate-discount {
+            animation: pulse-fast 1.5s infinite;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-pink-50 to-gray-100 text-gray-800 pb-24">
+
+    <!-- হেডার -->
+    <header class="sticky top-0 bg-white/95 backdrop-blur-md z-40 p-3 shadow-md space-y-2 border-b border-pink-100">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2 flex-wrap">
+                <h1 id="shopHeaderName" class="text-xl font-black text-pink-600 tracking-wide">রোজা কসমেটিক</h1>
+                <span id="headerDiscountBadge" class="hidden animate-discount bg-gradient-to-r from-red-600 to-pink-600 text-white font-black text-xs px-3 py-1 rounded-full shadow-lg border border-white"></span>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <!-- WhatsApp বাটন -->
+                <a id="headerWhatsappBtn" href="https://wa.me/8801700000000" target="_blank" class="bg-emerald-500 text-white text-[11px] px-3 py-1.5 rounded-full font-bold flex items-center gap-1 shadow"><span>💬</span> WhatsApp</a>
+                
+                <!-- শেয়ার বাটন -->
+                <button onclick="shareAppStore()" class="bg-blue-600 text-white text-[11px] px-3 py-1.5 rounded-full font-bold flex items-center gap-1 shadow"><span>📤</span> শেয়ার</button>
+            </div>
+        </div>
+
+        <div class="relative flex items-center">
+            <input type="text" id="searchInput" onkeyup="filterProducts(this.value)" placeholder="পণ্য বা কোড দিয়ে খুঁজুন..." class="w-full bg-gray-100 border border-pink-200 rounded-full pl-9 pr-10 py-2 text-xs outline-none focus:border-pink-500 shadow-inner">
+            <span class="absolute left-3 top-2.5 text-pink-400 text-xs">🔍</span>
+            <label class="absolute right-3 top-2 text-pink-500 cursor-pointer text-sm" title="গ্যালারি থেকে ছবি দিয়ে খুঁজুন">
+                📷 <input type="file" accept="image/*" onchange="searchByImage(event)" class="hidden">
+            </label>
+        </div>
+    </header>
+
+    <!-- ক্যাটাগরি বার -->
+    <div id="categoryBar" class="flex gap-3 overflow-x-auto no-scrollbar px-4 py-2.5 text-xs font-bold whitespace-nowrap bg-white border-b border-pink-100 shadow-sm">
+        <button onclick="filterCategory('সব')" id="catBtn_all" class="text-pink-600 border-b-2 border-pink-600 pb-1 font-black">সব</button>
+    </div>
+
+    <!-- মার্কেটিং ব্যানার -->
+    <div class="p-4">
+        <div class="bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 rounded-2xl p-4 text-white shadow-lg relative overflow-hidden flex justify-between items-center">
+            <div>
+                <span id="bannerDiscountTag" class="bg-white/25 text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">স্পেশাল অফার</span>
+                <h2 id="bannerShopName" class="text-lg font-black mt-1">রোজা কসমেটিক স্পেশাল সেল!</h2>
+                <p id="bannerSubText" class="text-xs opacity-90">যেকোনো অর্ডারে আকর্ষনীয় ছাড় ও উপহার।</p>
+            </div>
+            <div class="text-3xl animate-bounce">🛍</div>
+        </div>
+    </div>
+
+    <!-- হোম সেকশন -->
+    <section id="homeSection" class="px-4 space-y-4">
+        <div id="refreshIndicator" class="text-center text-pink-600 text-xs font-bold hidden py-1 animate-pulse">
+            🔄 পেজ রিফ্রেশ হচ্ছে...
+        </div>
+
+        <div id="productGrid" class="grid grid-cols-2 gap-3">
+            <p class="col-span-full text-center text-gray-400 py-12 text-xs">প্রোডাক্ট লোড হচ্ছে...</p>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-emerald-100 flex items-center justify-between">
+            <div class="space-y-0.5">
+                <h4 class="font-black text-xs text-emerald-700">📞 কোনো সহায়তা লাগবে?</h4>
+                <p class="text-[10px] text-gray-500">সরাসরি হোয়াটসঅ্যাপে আমাদের সাথে কথা বলুন</p>
+            </div>
+            <a id="helplineBtn" href="https://wa.me/8801700000000" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow transition flex items-center gap-1">
+                <span>💬</span> যোগাযোগ করুন
+            </a>
+        </div>
+    </section>
+
+    <!-- ইউজার অর্ডার ট্র্যাকিং -->
+    <section id="userSection" class="px-4 hidden space-y-4">
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-pink-100 space-y-2">
+            <h3 class="font-black text-sm text-pink-600 flex items-center gap-1">👤 আপনার এই ডিভাইসের সাম্প্রতিক অর্ডারসমূহ</h3>
+            <p class="text-[11px] text-gray-500">আপনার কোনো নম্বর দেয়া লাগবে না, সরাসরি আপনার অর্ডারগুলো নিচে দেখতে পাবেন:</p>
+        </div>
+        <div id="userOrdersList" class="space-y-3">
+            <p class="text-center text-gray-400 py-6 text-xs">আপনার কোনো সাম্প্রতিক অর্ডার পাওয়া যায়নি।</p>
+        </div>
+    </section>
+
+    <!-- প্রোডাক্ট ডিটেইলস পপআপ -->
+    <div id="productModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center">
+        <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-2xl max-h-[92vh] overflow-y-auto p-5 space-y-4 shadow-2xl border-t-4 border-pink-500">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 id="modalTitle" class="font-black text-base text-gray-800">প্রোডাক্ট ডিটেইলস</h3>
+                <button onclick="closeProductModal()" class="text-gray-400 font-bold text-xl px-2">&times;</button>
+            </div>
+
+            <div class="space-y-2">
+                <img id="modalMainImg" src="" class="w-full h-52 object-cover rounded-2xl border border-pink-100 shadow">
+                <div id="modalThumbnails" class="flex gap-2 overflow-x-auto py-1 no-scrollbar"></div>
+            </div>
+
+            <div class="text-xs space-y-1 bg-pink-50/50 p-3 rounded-xl border border-pink-100">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <span id="modalPrice" class="text-lg font-black text-pink-600">৳০</span>
+                        <!-- অরিজিনাল দাম স্পষ্ট করার জন্য লাল রঙ ও মোটা হরফ দেওয়া হয়েছে -->
+                        <span id="modalOldPrice" class="text-red-500 line-through text-xs font-black hidden">৳০</span>
+                    </div>
+                    <span id="modalDiscount" class="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold"></span>
+                </div>
+                <p id="modalCode" class="text-gray-500 font-medium"></p>
+                <p id="modalCategory" class="font-bold text-pink-600"></p>
+            </div>
+
+            <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 flex items-center justify-between text-xs">
+                <span class="font-bold text-gray-700">পরিমাণ (কয় পিস নিবেন):</span>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="changeQty(-1)" class="w-8 h-8 bg-pink-100 text-pink-700 font-black rounded-lg text-base shadow-sm hover:bg-pink-200 flex items-center justify-center">-</button>
+                    <input type="number" id="selectedQty" value="1" min="1" max="100" class="w-12 text-center font-black border border-gray-300 rounded-lg py-1 bg-white outline-none">
+                    <button type="button" onclick="changeQty(1)" class="w-8 h-8 bg-pink-100 text-pink-700 font-black rounded-lg text-base shadow-sm hover:bg-pink-200 flex items-center justify-center">+</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs">
+                <div>
+                    <label class="font-bold text-gray-700 block mb-1">সাইজ সিলেক্ট করুন:</label>
+                    <select id="selectedSize" class="w-full border border-gray-300 p-2.5 rounded-xl bg-white outline-none font-bold text-pink-600"></select>
+                </div>
+                <div>
+                    <label class="font-bold text-gray-700 block mb-1">কালার সিলেক্ট করুন:</label>
+                    <select id="selectedColor" class="w-full border border-gray-300 p-2.5 rounded-xl bg-white outline-none font-bold text-pink-600"></select>
+                </div>
+            </div>
+
+            <button onclick="addToCartFromModal()" class="w-full bg-pink-600 text-white py-3 rounded-xl font-bold text-sm shadow-lg">🛒 কার্টে যোগ করুন</button>
+
+            <!-- কাস্টমার রিভিউ সেকশন -->
+            <div class="border-t pt-4 space-y-3">
+                <div class="flex justify-between items-center">
+                    <h4 class="font-black text-xs text-gray-800 flex items-center gap-1">
+                        ⭐ কাস্টমার রিভিউ (<span id="modalReviewCount">০</span>)
+                    </h4>
+                    <span id="modalAvgRating" class="text-xs font-black text-amber-500 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">⭐ 0.0</span>
+                </div>
+
+                <!-- রিভিউ তালিকা -->
+                <div id="modalReviewList" class="space-y-2 max-h-48 overflow-y-auto text-xs pr-1">
+                    <p class="text-gray-400 text-center py-2">কোনো রিভিউ পাওয়া যায়নি।</p>
+                </div>
+
+                <p class="text-[10px] text-gray-500 text-center bg-gray-50 p-2 rounded-xl border border-gray-200 font-medium">
+                    🔒 শুধুমাত্র পণ্য ক্রয় ও ডেলিভারি সম্পন্ন হওয়া গ্রাহকগণ "ইউজার" অপশন থেকে রিভিউ দিতে পারবেন।
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ডেলিভারি হওয়া অর্ডারের রিভিউ পপআপ -->
+    <div id="deliveredReviewModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-4 space-y-3 shadow-2xl border-t-4 border-pink-500">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="font-black text-sm text-gray-800" id="devRevProdName">প্রোডাক্ট রিভিউ</h3>
+                <button onclick="closeDeliveredReviewModal()" class="text-gray-400 font-bold text-xl px-2">&times;</button>
+            </div>
+            <form id="deliveredReviewForm" onsubmit="submitDeliveredReview(event)" class="space-y-2 text-xs">
+                <input type="hidden" id="devRevProdId">
+                <div>
+                    <label class="block text-[11px] font-bold text-gray-600 mb-1">আপনার রেটিং:</label>
+                    <select id="devRevRating" class="w-full border border-gray-300 p-2 rounded-lg bg-white font-bold text-amber-500 outline-none">
+                        <option value="5">⭐⭐⭐⭐⭐ (৫/৫ - অসাধারণ)</option>
+                        <option value="4">⭐⭐⭐⭐ (৪/৫ - খুব ভালো)</option>
+                        <option value="3">⭐⭐⭐ (৩/৫ - ভালো)</option>
+                        <option value="2">⭐⭐ (২/৫ - মোটামুটি)</option>
+                        <option value="1">⭐ (১/৫ - খারাপ)</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="text" id="devRevName" required placeholder="আপনার নাম" class="w-full border border-gray-300 p-2 rounded-lg bg-white outline-none">
+                </div>
+                <div>
+                    <textarea id="devRevComment" required placeholder="প্রোডাক্টটি পেয়ে আপনার সত্যানুভূতি লিখুন..." class="w-full border border-gray-300 p-2 rounded-lg bg-white outline-none" rows="2"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white py-2 rounded-lg font-bold transition shadow-sm">রিভিউ জমা দিন</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- কার্ট এবং চেকআউট মোডাল -->
+    <div id="cartModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-2">
+        <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-2xl max-h-[92vh] overflow-y-auto p-5 space-y-5 shadow-2xl border-t-4 border-pink-600">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-black text-base text-gray-800">🛒 আপনার কার্ট ও অর্ডার ফর্ম</h3>
+                <button onclick="closeCartModal()" class="text-gray-400 font-bold text-2xl px-2">&times;</button>
+            </div>
+
+            <div class="bg-pink-50/80 p-4 rounded-2xl border border-pink-200 shadow-sm space-y-3">
+                <h4 class="font-black text-xs text-pink-700 border-b border-pink-200 pb-2">📦 সিলেক্ট করা প্রোডাক্টসমূহ:</h4>
+                <div id="cartItemsContainer" class="space-y-2 text-xs max-h-48 overflow-y-auto pr-1"></div>
+                
+                <div class="space-y-1 pt-2 border-t border-pink-200 text-xs font-semibold">
+                    <div class="flex justify-between text-gray-600">
+                        <span>পণ্যের মোট দাম:</span>
+                        <span id="subTotalText">৳০</span>
+                    </div>
+                    <div class="flex justify-between text-orange-600">
+                        <span>ডেলিভারি চার্জ:</span>
+                        <span id="deliveryChargeText">৳০</span>
+                    </div>
+                    <div class="flex justify-between font-black text-sm text-pink-700 pt-1 border-t">
+                        <span>সর্বমোট প্রদেয় মূল্য:</span>
+                        <span id="grandTotalText" class="text-lg">৳০</span>
+                    </div>
+                </div>
+            </div>
+
+            <form id="orderForm" onsubmit="submitMultiOrder(event)" class="bg-gray-50/90 p-4 rounded-2xl border border-gray-200 shadow-sm space-y-3 text-xs">
+                <h4 class="font-black text-xs text-gray-800 border-b pb-2">👤 কাস্টমারের ডেলিভারি তথ্য:</h4>
+                
+                <div>
+                    <label class="font-bold text-gray-700 block mb-1">আপনার নাম:</label>
+                    <input type="text" id="custName" required placeholder="পুরো নাম লিখুন" class="w-full border border-gray-300 p-3 rounded-xl outline-none bg-white">
+                </div>
+
+                <div>
+                    <label class="font-bold text-gray-700 block mb-1">মোবাইল নম্বর:</label>
+                    <input type="tel" id="custPhone" required placeholder="১১ ডিজিটের নম্বর দিন" class="w-full border border-gray-300 p-3 rounded-xl outline-none bg-white">
+                </div>
+
+                <div>
+                    <label class="font-bold text-gray-700 block mb-1">ডেলিভারি এলাকা সিলেক্ট করুন:</label>
+                    <select id="deliveryArea" onchange="calculateDeliveryCharge()" class="w-full border border-pink-300 p-3 rounded-xl bg-white outline-none font-bold text-pink-600 shadow-sm">
+                        <option value="inside">পাবনার মধ্যে (Inside Pabna)</option>
+                        <option value="outside" selected>পাবনার বাইরে (Outside Pabna)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="font-bold text-gray-700 block mb-1">সম্পূর্ণ ঠিকানা (গ্রাম, থানা, জেলা):</label>
+                    <textarea id="custAddress" required placeholder="আপনার বিস্তারিত ঠিকানা লিখুন" class="w-full border border-gray-300 p-3 rounded-xl outline-none bg-white" rows="2"></textarea>
+                </div>
+                
+                <div>
+                    <label class="font-bold text-gray-700 block mb-1">পেমেন্ট মাধ্যম সিলেক্ট করুন:</label>
+                    <select id="payMethod" onchange="toggleTrxInput()" class="w-full border border-gray-300 p-3 rounded-xl bg-white outline-none font-bold">
+                        <option value="bKash">বিকাশ (bKash)</option>
+                        <option value="Nagad">নগদ (Nagad)</option>
+                        <option value="Rocket">রকেট (Rocket)</option>
+                        <option value="Cash on Delivery">ক্যাশ অন ডেলিভারি (COD)</option>
+                    </select>
+                </div>
+
+                <div id="trxBox" class="bg-white p-3 rounded-xl border border-pink-200 space-y-1.5">
+                    <p class="text-[11px] text-pink-700 font-bold"><span id="payMethodLabel">বিকাশ</span> নম্বর: <span id="paymentNum" class="text-gray-900 font-black text-sm">লোড হচ্ছে...</span></p>
+                    <input type="text" id="trxId" required placeholder="ট্রানজেকশন আইডি (TrxID) দিন *" class="w-full border border-pink-300 p-2.5 rounded-lg outline-none focus:border-pink-500">
+                </div>
+
+                <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white py-3.5 rounded-xl font-black text-sm shadow-lg mt-3">অর্ডার কনফার্ম করুন</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- বটম নেভিগেশন -->
+    <nav class="fixed bottom-0 w-full bg-white/95 backdrop-blur-md border-t border-pink-100 flex justify-around py-2.5 z-40 text-[10px] text-center font-bold text-gray-500 shadow-lg">
+        <button onclick="switchTab('home')" id="navHome" class="text-pink-600 flex flex-col items-center"><span class="text-base">🏠</span><span>হোম</span></button>
+        <button onclick="alert('ক্যাটাগরি অপশন থেকে পণ্য বেছে নিন')" class="hover:text-pink-600 flex flex-col items-center"><span class="text-base">📁</span><span>ক্যাটাগরি</span></button>
+        <button onclick="openCartModal()" class="hover:text-pink-600 relative flex flex-col items-center"><span class="text-base">🛒</span><span>কার্ট</span><span id="cartCount" class="absolute -top-1.5 right-1.5 bg-pink-600 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-black shadow">০</span></button>
+        <button onclick="switchTab('user')" id="navUser" class="hover:text-pink-600 flex flex-col items-center"><span class="text-base">👤</span><span>ইউজার</span></button>
+    </nav>
+
+    <!-- ফায়ারবেস স্ক্রিপ্ট -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getDatabase, ref, onValue, push, set, get } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYsO1Z294iDF6dHzIXOPn2oxsjOHrpHrU",
+            authDomain: "roza-cosmetic.firebaseapp.com",
+            databaseURL: "https://roza-cosmetic-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "roza-cosmetic",
+            storageBucket: "roza-cosmetic.firebasestorage.app",
+            messagingSenderId: "7553498548",
+            appId: "1:7553498548:web:db3372f0c1d86ff49d46e1",
+            measurementId: "G-JHFE1WSJWD"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        window.db = db;
+        window.ref = ref;
+        window.onValue = onValue;
+        window.push = push;
+        window.set = set;
+        window.get = get;
+
+        const defaultLocalProducts = [
+            { id: "p1", name: "Maybelline SuperStay Matte Ink Lipstick", cat: "Makeup", price: 1500, disc: "10", barcode: "MAY001", size: "Standard", color: "Red, Pink, Nude", img: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500" },
+            { id: "p2", name: "L'Oréal Infallible 24H Foundation", cat: "Makeup", price: 2200, disc: "15", barcode: "LOR002", size: "30ml", color: "Natural Beige, Ivory, Warm Sand", img: "https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=500" },
+            { id: "p3", name: "Maybelline Fit Me Compact Powder", cat: "Makeup", price: 1100, disc: "5", barcode: "MAY003", size: "Regular", color: "Light, Medium, Deep", img: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=500" },
+            { id: "p4", name: "Essence Lash Princess Mascara", cat: "Eye Makeup", price: 850, disc: "0", barcode: "ESS004", size: "Standard", color: "Black", img: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=500" },
+            { id: "p5", name: "Flormar Dipliner Black", cat: "Eye Makeup", price: 950, disc: "10", barcode: "FLO005", size: "Standard", color: "Jet Black", img: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500" },
+            { id: "p6", name: "NYX Micro Brow Pencil", cat: "Eye Makeup", price: 800, disc: "0", barcode: "NYX006", size: "Standard", color: "Dark Brown, Soft Black", img: "https://images.unsplash.com/photo-1596704017254-9b121068fb31?w=500" },
+            { id: "p7", name: "Wet n Wild Color Icon Blush", cat: "Makeup", price: 750, disc: "5", barcode: "WET007", size: "Standard", color: "Mellow Wine, Rose Champagne", img: "https://images.unsplash.com/photo-1532467977080-932b694b9671?w=500" },
+            { id: "p8", name: "Garnier Vitamin C Face Serum", cat: "Skincare", price: 1400, disc: "20", barcode: "GAR008", size: "30ml", color: "Standard", img: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=500" },
+            { id: "p9", name: "Bioderma Photoderm Sunscreen SPF 50+", cat: "Skincare", price: 2500, disc: "10", barcode: "BIO009", size: "40ml", color: "Standard", img: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=500" },
+            { id: "p10", name: "NYX Matte Finish Setting Spray", cat: "Makeup", price: 1600, disc: "0", barcode: "NYX010", size: "60ml", color: "Standard", img: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=500" },
+            { id: "p11", name: "Garnier SkinActive Sheet Mask (Combo)", cat: "Skincare", price: 350, disc: "5", barcode: "GAR011", size: "1 Pcs", color: "Hydrating, Brightening", img: "https://images.unsplash.com/photo-1567331711464-2f22c4c37626?w=500" },
+            { id: "p12", name: "Golden Rose Nail Polish Set", cat: "Nails", price: 600, disc: "0", barcode: "GOL012", size: "10ml", color: "Red, Pink, Nude, Maroon", img: "https://images.unsplash.com/photo-1632345031435-8727f6c97d34?w=500" }
+        ];
+
+        window.trackCustomerDevice = function() {
+            let deviceId = localStorage.getItem('roza_device_id');
+            if (!deviceId) {
+                deviceId = 'DEV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 7);
+                localStorage.setItem('roza_device_id', deviceId);
+            }
+            window.currentDeviceId = deviceId;
+        };
+
+        window.loadFastInitialData = function() {
+            let cachedProducts = localStorage.getItem('cached_roza_products');
+            if (cachedProducts) {
+                try {
+                    window.allProducts = JSON.parse(cachedProducts);
+                    filterCategory(window.activeCategory || 'সব');
+                } catch(e) {
+                    window.allProducts = defaultLocalProducts;
+                    filterCategory('সব');
+                }
+            } else {
+                window.allProducts = defaultLocalProducts;
+                filterCategory('সব');
+            }
+        };
+
+        window.loadAllReviewsGlobally = function() {
+            get(ref(db, 'reviews')).then((snapshot) => {
+                window.allReviewsData = snapshot.val() || {};
+                filterCategory(window.activeCategory || 'সব');
+            });
+        };
+
+        window.loadProductsFromFirebase = function() {
+            get(ref(db, 'products')).then((snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    let productsArray = Object.entries(data).map(([id, item]) => ({ id, ...item }));
+                    window.allProducts = [...defaultLocalProducts, ...productsArray];
+                    localStorage.setItem('cached_roza_products', JSON.stringify(window.allProducts));
+                    filterCategory(window.activeCategory || 'সব');
+                }
+            });
+        };
+
+        window.loadSettingsFromFirebase = function() {
+            get(ref(db, 'settings')).then((snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    window.shopSettings = data;
+                    if(data.shopName) {
+                        document.title = data.shopName;
+                        if(document.getElementById('shopHeaderName')) document.getElementById('shopHeaderName').innerText = data.shopName;
+                        if(document.getElementById('bannerShopName')) document.getElementById('bannerShopName').innerText = `${data.shopName} স্পেশাল সেল!`;
+                    }
+                    if(data.categories) {
+                        renderDynamicCategoryBar(data.categories);
+                    } else {
+                        renderDynamicCategoryBar("Makeup, Eye Makeup, Skincare, Nails");
+                    }
+                    
+                    if(data.helpline) {
+                        let cleanNum = data.helpline.replace(/[^0-9]/g, '');
+                        let btn = document.getElementById('helplineBtn');
+                        if(btn) btn.href = `https://wa.me/${cleanNum}`;
+                        let headerWa = document.getElementById('headerWhatsappBtn');
+                        if(headerWa) headerWa.href = `https://wa.me/${cleanNum}`;
+                    }
+
+                    toggleTrxInput();
+                    calculateDeliveryCharge();
+                } else {
+                    renderDynamicCategoryBar("Makeup, Eye Makeup, Skincare, Nails");
+                }
+            });
+        };
+
+        window.loadMarketingFromFirebase = function() {
+            get(ref(db, 'marketing')).then((snapshot) => {
+                const data = snapshot.val();
+                const badge = document.getElementById('headerDiscountBadge');
+                const bannerSub = document.getElementById('bannerSubText');
+                if (data && (data.offerName || data.discount)) {
+                    let offer = data.offerName ? data.offerName.trim() : '';
+                    let discount = data.discount ? data.discount.trim() : '';
+                    if (discount && !discount.includes('%') && !isNaN(discount)) discount += '% OFF';
+                    badge.innerText = `🔥 ${offer} ${discount}`.trim();
+                    badge.classList.remove('hidden');
+                    if(bannerSub) bannerSub.innerText = `${offer} অফারে পাচ্ছেন বিশেষ ছাড় ${discount}!`;
+                } else {
+                    badge.classList.add('hidden');
+                    if(bannerSub) bannerSub.innerText = "যেকোনো অর্ডারে আকর্ষনীয় ছাড় ও উপহার।";
+                }
+            });
+        };
+
+        window.loadFastInitialData();
+        window.loadProductsFromFirebase();
+        window.loadSettingsFromFirebase();
+        window.loadMarketingFromFirebase();
+        window.loadAllReviewsGlobally();
+        window.trackCustomerDevice();
+    </script>
+
+    <!-- সাধারণ জাভাস্ক্রিপ্ট -->
+    <script>
+        let cart = [];
+        let selectedProductForModal = null;
+        let calculatedDeliveryCharge = 0;
+        let activeCategory = 'সব';
+        window.activeCategory = activeCategory;
+
+        let shuffleInterval = setInterval(() => {
+            if (window.allProducts && window.allProducts.length > 0) {
+                let shuffled = [...window.allProducts].sort(() => Math.random() - 0.5);
+                if (activeCategory === 'সব') {
+                    renderCustomerProducts(shuffled);
+                } else {
+                    let filtered = shuffled.filter(p => p.cat && p.cat.includes(activeCategory));
+                    renderCustomerProducts(filtered);
+                }
+            }
+        }, 5000);
+
+        let touchStartY = 0;
+        window.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        window.addEventListener('touchend', (e) => {
+            let touchEndY = e.changedTouches[0].clientY;
+            if (touchEndY - touchStartY > 80 && window.scrollY === 0) {
+                triggerPullToRefresh();
+            }
+        }, { passive: true });
+
+        function triggerPullToRefresh() {
+            let indicator = document.getElementById('refreshIndicator');
+            if(indicator) indicator.classList.remove('hidden');
+            window.loadProductsFromFirebase();
+            setTimeout(() => {
+                if(indicator) indicator.classList.add('hidden');
+            }, 1000);
+        }
+
+        function changeQty(amount) {
+            let input = document.getElementById('selectedQty');
+            let currentVal = parseInt(input.value) || 1;
+            let newVal = currentVal + amount;
+            if(newVal >= 1 && newVal <= 100) input.value = newVal;
+        }
+
+        function switchTab(tab) {
+            if(tab === 'home') {
+                document.getElementById('homeSection').classList.remove('hidden');
+                document.getElementById('userSection').classList.add('hidden');
+                document.getElementById('navHome').classList.add('text-pink-600');
+                document.getElementById('navUser').classList.remove('text-pink-600');
+            } else if(tab === 'user') {
+                document.getElementById('homeSection').classList.add('hidden');
+                document.getElementById('userSection').classList.remove('hidden');
+                document.getElementById('navHome').classList.remove('text-pink-600');
+                document.getElementById('navUser').classList.add('text-pink-600');
+                autoLoadCustomerOrders();
+            }
+        }
+
+        function renderDynamicCategoryBar(categoriesStr) {
+            const catBar = document.getElementById('categoryBar');
+            if(!catBar) return;
+            let catArray = categoriesStr ? categoriesStr.split(',').map(c => c.trim()).filter(c => c !== '') : ["Makeup", "Eye Makeup", "Skincare", "Nails"];
+            let html = `<button onclick="filterCategory('সব')" id="catBtn_all" class="${activeCategory === 'সব' ? 'text-pink-600 border-b-2 border-pink-600 font-black' : 'text-gray-600'} pb-1">সব</button>`;
+            catArray.forEach(c => { 
+                let isAct = (activeCategory === c);
+                html += `<button onclick="filterCategory('${c}')" id="catBtn_${c}" class="${isAct ? 'text-pink-600 border-b-2 border-pink-600 font-black' : 'text-gray-600'} pb-1">${c}</button>`; 
+            });
+            catBar.innerHTML = html;
+        }
+
+        function renderCustomerProducts(products) {
+            const container = document.getElementById('productGrid');
+            if (!container) return;
+            if (!products || products.length === 0) {
+                container.innerHTML = `<p class="col-span-full text-center text-gray-400 py-12 text-xs">কোনো প্রোডাক্ট পাওয়া যায়নি।</p>`;
+                return;
+            }
+
+            let allRevs = window.allReviewsData || {};
+
+            container.innerHTML = products.map(p => {
+                let displayImg = p.img || (p.images && p.images[0]) || 'https://via.placeholder.com/150';
+                
+                let originalPrice = Number(p.price || 0);
+                let discNum = Number(p.disc || 0);
+                let finalPrice = originalPrice;
+                if (discNum > 0) {
+                    finalPrice = Math.round(originalPrice - (originalPrice * discNum / 100));
+                }
+
+                let pReviews = allRevs[p.id] ? Object.values(allRevs[p.id]) : [];
+                let revCount = pReviews.length;
+                let avgRating = 0;
+                if (revCount > 0) {
+                    let sum = pReviews.reduce((s, r) => s + Number(r.rating || 5), 0);
+                    avgRating = Math.round(sum / revCount);
+                }
+
+                let starIcons = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= avgRating) {
+                        starIcons += '★';
+                    } else {
+                        starIcons += '☆';
+                    }
+                }
+
+                let ratingBadge = `<div class="text-xs text-gray-900 font-bold my-0.5 flex items-center gap-1"><span class="tracking-widest text-black">${starIcons}</span><span class="text-gray-400 text-[10px]">(${revCount})</span></div>`;
+
+                return `
+                <div class="bg-white p-3 rounded-2xl shadow-sm border border-pink-100 flex flex-col justify-between">
+                    <img src="${displayImg}" class="w-full h-36 object-cover rounded-xl mb-2 cursor-pointer" onclick="openProductModal('${p.id}')">
+                    <div>
+                        <h3 class="font-bold text-xs text-gray-800 line-clamp-1">${p.name}</h3>
+                        ${ratingBadge}
+                        <div class="flex justify-between items-center mt-1">
+                            <div class="flex items-center gap-1.5">
+                                <span class="font-black text-pink-600 text-xs">৳${finalPrice}</span>
+                                <!-- হোমপেজেও অরিজিনাল দাম স্পষ্ট লাল রঙে কাটা অবস্থায় রাখা হলো -->
+                                ${discNum > 0 ? `<span class="text-red-500 line-through text-[10px] font-black">৳${originalPrice}</span>` : ''}
+                            </div>
+                            ${discNum > 0 ? `<span class="bg-red-50 text-red-500 text-[9px] px-1.5 py-0.5 rounded-full font-bold">${discNum}% OFF</span>` : ''}
+                        </div>
+                    </div>
+                    <button onclick="openProductModal('${p.id}')" class="w-full mt-2.5 bg-pink-600 text-white py-2 rounded-xl text-xs font-bold shadow-sm">পছন্দ করুন</button>
+                </div>`;
+            }).join('');
+        }
+
+        function openProductModal(productId) {
+            let p = window.allProducts.find(item => item.id === productId);
+            if(!p) return;
+
+            selectedProductForModal = p;
+            let images = (p.images && p.images.length > 0) ? p.images : [p.img];
+
+            let originalPrice = Number(p.price || 0);
+            let discNum = Number(p.disc || 0);
+            let finalPrice = originalPrice;
+            if (discNum > 0) {
+                finalPrice = Math.round(originalPrice - (originalPrice * discNum / 100));
+            }
+
+            document.getElementById('modalTitle').innerText = p.name;
+            document.getElementById('modalMainImg').src = images[0];
+            document.getElementById('modalPrice').innerText = `৳${finalPrice}`;
+            
+            let oldPriceElem = document.getElementById('modalOldPrice');
+            if (discNum > 0) {
+                oldPriceElem.innerText = `৳${originalPrice}`;
+                oldPriceElem.classList.remove('hidden');
+            } else {
+                oldPriceElem.classList.add('hidden');
+            }
+
+            let discElem = document.getElementById('modalDiscount');
+            if (discNum > 0) {
+                discElem.innerText = `${discNum}% ছাড়`;
+                discElem.classList.remove('hidden');
+            } else {
+                discElem.classList.add('hidden');
+            }
+
+            document.getElementById('modalCode').innerText = `কোড / বারকোড: ${p.barcode || 'N/A'}`;
+            document.getElementById('modalCategory').innerText = `ক্যাটাগরি: ${p.cat || 'সাধারণ'}`;
+            document.getElementById('selectedQty').value = 1;
+
+            let sizeSelect = document.getElementById('selectedSize');
+            let sizes = (p.size || 'Standard').split(',').map(s => s.trim()).filter(s => s !== '');
+            sizeSelect.innerHTML = sizes.map(s => `<option value="${s}">${s}</option>`).join('');
+
+            let colorSelect = document.getElementById('selectedColor');
+            let colors = (p.color || 'Standard').split(',').map(c => c.trim()).filter(c => c !== '');
+            colorSelect.innerHTML = colors.map(c => `<option value="${c}">${c}</option>`).join('');
+
+            let thumbContainer = document.getElementById('modalThumbnails');
+            if (images.length > 1) {
+                thumbContainer.innerHTML = images.map((imgUrl) => `
+                    <img src="${imgUrl}" onclick="document.getElementById('modalMainImg').src='${imgUrl}'" class="w-10 h-10 object-cover rounded-lg border-2 border-gray-200 cursor-pointer">
+                `).join('');
+            } else {
+                thumbContainer.innerHTML = '';
+            }
+
+            loadReviewsForProduct(p.id);
+            document.getElementById('productModal').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.add('hidden');
+        }
+
+        function loadReviewsForProduct(productId) {
+            let reviewListContainer = document.getElementById('modalReviewList');
+            let countSpan = document.getElementById('modalReviewCount');
+            let avgSpan = document.getElementById('modalAvgRating');
+
+            if(!window.db || !window.ref || !window.get) return;
+
+            window.get(window.ref(window.db, `reviews/${productId}`)).then((snapshot) => {
+                const data = snapshot.val();
+                if(data) {
+                    let reviewsArray = Object.values(data);
+                    let totalCount = reviewsArray.length;
+                    let totalRatingSum = reviewsArray.reduce((sum, r) => sum + Number(r.rating || 5), 0);
+                    let avgRating = (totalRatingSum / totalCount).toFixed(1);
+
+                    countSpan.innerText = totalCount;
+                    avgSpan.innerText = `⭐ ${avgRating}`;
+
+                    reviewListContainer.innerHTML = reviewsArray.reverse().map(r => {
+                        let stars = '★'.repeat(r.rating || 5) + '☆'.repeat(5 - (r.rating || 5));
+                        return `
+                        <div class="bg-gray-50 p-2.5 rounded-xl border border-gray-200 text-xs space-y-1">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-gray-800">${r.userName || 'কাস্টমার'}</span>
+                                <span class="text-[10px] text-gray-400">${r.time || ''}</span>
+                            </div>
+                            <div class="text-black font-bold text-[11px]">${stars} (${r.rating}/৫)</div>
+                            <p class="text-gray-600">${r.comment || ''}</p>
+                        </div>`;
+                    }).join('');
+                } else {
+                    countSpan.innerText = '০';
+                    avgSpan.innerText = '⭐ 0.0';
+                    reviewListContainer.innerHTML = `<p class="text-gray-400 text-center py-2">কোনো রিভিউ পাওয়া যায়নি।</p>`;
+                }
+            });
+        }
+
+        function openDeliveredReviewModal(productId, productName) {
+            document.getElementById('devRevProdId').value = productId;
+            document.getElementById('devRevProdName').innerText = productName;
+            document.getElementById('deliveredReviewModal').classList.remove('hidden');
+        }
+
+        function closeDeliveredReviewModal() {
+            document.getElementById('deliveredReviewModal').classList.add('hidden');
+        }
+
+        async function submitDeliveredReview(e) {
+            e.preventDefault();
+            let pId = document.getElementById('devRevProdId').value;
+            let rating = document.getElementById('devRevRating').value;
+            let name = document.getElementById('devRevName').value.trim();
+            let comment = document.getElementById('devRevComment').value.trim();
+
+            if(!pId || !name || !comment) {
+                alert("দয়া করে সকল তথ্য পূরণ করুন!");
+                return;
+            }
+
+            let reviewData = {
+                userName: name,
+                rating: Number(rating),
+                comment: comment,
+                time: new Date().toLocaleDateString('bn-BD')
+            };
+
+            if(window.db && window.ref && window.push && window.set) {
+                const newRevRef = window.push(window.ref(window.db, `reviews/${pId}`));
+                await window.set(newRevRef, reviewData);
+                alert("ধন্যবাদ! আপনার রিভিউটি সফলভাবে প্রকাশিত হয়েছে।");
+                closeDeliveredReviewModal();
+                document.getElementById('deliveredReviewForm').reset();
+            }
+        }
+
+        function addToCartFromModal() {
+            if(!selectedProductForModal) return;
+
+            let chosenSize = document.getElementById('selectedSize').value;
+            let chosenColor = document.getElementById('selectedColor').value;
+            let qty = parseInt(document.getElementById('selectedQty').value) || 1;
+
+            let originalPrice = Number(selectedProductForModal.price || 0);
+            let discNum = Number(selectedProductForModal.disc || 0);
+            let finalPrice = originalPrice;
+            if (discNum > 0) {
+                finalPrice = Math.round(originalPrice - (originalPrice * discNum / 100));
+            }
+
+            cart.push({
+                ...selectedProductForModal,
+                price: finalPrice, 
+                chosenSize: chosenSize,
+                chosenColor: chosenColor,
+                qty: qty
+            });
+
+            updateCartUI();
+            closeProductModal();
+            alert(`${qty} টি প্রোডাক্ট কার্টে যোগ করা হয়েছে!`);
+        }
+
+        function calculateDeliveryCharge() {
+            let areaType = document.getElementById('deliveryArea').value;
+            let subTotal = cart.reduce((sum, item) => sum + (Number(item.price || 0) * item.qty), 0);
+            
+            let insideCharge = Number(window.shopSettings?.pabnaInsideCharge ?? 60);
+            let outsideCharge = Number(window.shopSettings?.pabnaOutsideCharge ?? 100);
+
+            if(areaType === 'inside') {
+                calculatedDeliveryCharge = insideCharge;
+            } else {
+                calculatedDeliveryCharge = outsideCharge;
+            }
+
+            document.getElementById('subTotalText').innerText = `৳${subTotal}`;
+            document.getElementById('deliveryChargeText').innerText = `৳${calculatedDeliveryCharge}`;
+            document.getElementById('grandTotalText').innerText = `৳${subTotal + calculatedDeliveryCharge}`;
+        }
+
+        function updateCartUI() {
+            let totalItemCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cartCount').innerText = totalItemCount;
+            let container = document.getElementById('cartItemsContainer');
+
+            if(cart.length === 0) {
+                container.innerHTML = `<p class="text-center text-gray-400 py-3">কার্ট ফাঁকা রয়েছে!</p>`;
+            } else {
+                container.innerHTML = cart.map((item, index) => {
+                    let itemTotal = Number(item.price || 0) * item.qty;
+                    return `
+                    <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-pink-100 shadow-sm">
+                        <div class="flex gap-2.5 items-center">
+                            <img src="${item.img || 'https://via.placeholder.com/35'}" class="w-10 h-10 object-cover rounded-lg border">
+                            <div>
+                                <p class="font-bold text-gray-800 text-xs">${item.name}</p>
+                                <p class="text-[10px] text-gray-500">সাইজ: ${item.chosenSize} | কালার: ${item.chosenColor} | পরিমাণ: ${item.qty} পিস</p>
+                                <p class="font-black text-pink-600">৳${item.price} x ${item.qty} = ৳${itemTotal}</p>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-red-500 font-bold px-2 text-xs">✕</button>
+                    </div>`;
+                }).join('');
+            }
+            calculateDeliveryCharge();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function openCartModal() {
+            updateCartUI();
+            toggleTrxInput();
+            document.getElementById('cartModal').classList.remove('hidden');
+        }
+
+        function closeCartModal() {
+            document.getElementById('cartModal').classList.add('hidden');
+        }
+
+        function toggleTrxInput() {
+            let payMethod = document.getElementById('payMethod').value;
+            let trxBox = document.getElementById('trxBox');
+            let trxInput = document.getElementById('trxId');
+            let payNum = document.getElementById('paymentNum');
+            let payLabel = document.getElementById('payMethodLabel');
+            let settings = window.shopSettings || {};
+
+            if (payMethod !== 'Cash on Delivery') {
+                trxBox.classList.remove('hidden');
+                trxInput.required = true;
+                payLabel.innerText = payMethod;
+                payNum.innerText = settings[payMethod.toLowerCase()] || settings.helpline || "নম্বর সেট করা হয়নি";
+            } else {
+                trxBox.classList.add('hidden');
+                trxInput.required = false;
+                trxInput.value = '';
+            }
+        }
+
+        function generateOtpCode() {
+            return Math.floor(1000 + Math.random() * 9000).toString();
+        }
+
+        async function submitMultiOrder(e) {
+            e.preventDefault();
+            if(cart.length === 0) {
+                alert("আপনার কার্টে কোনো প্রোডাক্ট নেই!");
+                return;
+            }
+
+            let custName = document.getElementById('custName').value;
+            let custPhone = document.getElementById('custPhone').value;
+            let deliveryAreaText = document.getElementById('deliveryArea').options[document.getElementById('deliveryArea').selectedIndex].text;
+            let custAddress = `এলাকা: ${deliveryAreaText}, ঠিকানা: ${document.getElementById('custAddress').value}`;
+            let payMethod = document.getElementById('payMethod').value;
+            let trxId = document.getElementById('trxId').value || 'ক্যাশ অন ডেলিভারি (COD)';
+
+            let productNames = cart.map(item => `${item.name} (${item.qty} পিস, সাইজ: ${item.chosenSize}, কালার: ${item.chosenColor})`).join(', ');
+            let subTotal = cart.reduce((sum, item) => sum + (Number(item.price || 0) * item.qty), 0);
+            let grandTotal = subTotal + calculatedDeliveryCharge;
+            let productImages = cart.map(item => item.img || '');
+            let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            let deviceId = window.currentDeviceId || localStorage.getItem('roza_device_id') || 'DEV-UNKNOWN';
+            let otpCode = generateOtpCode();
+
+            let cartItemsList = cart.map(item => ({ id: item.id, name: item.name, img: item.img || '' }));
+
+            let orderData = {
+                productName: productNames,
+                totalPrice: subTotal,
+                deliveryCharge: calculatedDeliveryCharge,
+                grandTotal: grandTotal,
+                customerName: custName,
+                phone: custPhone,
+                address: custAddress,
+                paymentMethod: payMethod,
+                trxId: trxId,
+                status: 'Pending',
+                time: new Date().toLocaleString(),
+                quantity: totalQty,
+                productImages: productImages,
+                deviceId: deviceId,
+                otp: otpCode,
+                items: cartItemsList
+            };
+
+            if(window.db && window.ref && window.push && window.set) {
+                const newOrderRef = window.push(window.ref(window.db, 'orders'));
+                await window.set(newOrderRef, orderData);
+                
+                let existingOrders = JSON.parse(localStorage.getItem('my_device_orders') || '[]');
+                existingOrders.push(newOrderRef.key);
+                localStorage.setItem('my_device_orders', JSON.stringify(existingOrders));
+                
+                alert("আপনার অর্ডারটি সফলভাবে জমা হয়েছে!");
+
+                let shopName = window.shopSettings?.shopName || "রোজা কসমেটিক";
+                let helplineNumber = window.shopSettings?.helpline || "8801700000000";
+                helplineNumber = helplineNumber.replace(/[^0-9]/g, '');
+
+                let waMessage = `🛒 *নতুন অর্ডার বুকিং (${shopName})*\n\n` +
+                                `👤 *কাস্টমার নাম:* ${custName}\n` +
+                                `📞 *ফোন নম্বর:* ${custPhone}\n` +
+                                `📍 *ঠিকানা:* ${custAddress}\n\n` +
+                                `📦 *অর্ডার করা পণ্য:* ${productNames}\n` +
+                                `💵 *পণ্যের দাম:* ৳${subTotal}\n` +
+                                `🚚 *ডেলিভারি চার্জ:* ৳${calculatedDeliveryCharge}\n` +
+                                `💰 *সর্বমোট প্রদেয় মূল্য:* ৳${grandTotal}\n` +
+                                `💳 *পেমেন্ট পদ্ধতি:* ${payMethod}\n` +
+                                `🔢 *TrxID:* ${trxId}\n` +
+                                `🔐 *গোপন ডেলিভারি কোড (OTP):* ${otpCode}\n\nধন্যবাদ!`;
+
+                let whatsappURL = `https://wa.me/${helplineNumber}?text=${encodeURIComponent(waMessage)}`;
+                
+                cart = [];
+                updateCartUI();
+                closeCartModal();
+                document.getElementById('orderForm').reset();
+                window.open(whatsappURL, '_blank');
+            }
+        }
+
+        function autoLoadCustomerOrders() {
+            let myOrderKeys = JSON.parse(localStorage.getItem('my_device_orders') || '[]');
+            let container = document.getElementById('userOrdersList');
+
+            if(myOrderKeys.length === 0) {
+                container.innerHTML = `<p class="text-center text-gray-400 py-6 text-xs">আপনার এই মোবাইল/ডিভাইস থেকে কোনো অর্ডার করা হয়নি।</p>`;
+                return;
+            }
+
+            container.innerHTML = `<p class="text-center text-gray-400 py-4 text-xs">অর্ডারের তথ্য লোড হচ্ছে...</p>`;
+
+            window.get(window.ref(window.db, 'orders')).then((snapshot) => {
+                const data = snapshot.val();
+                if(data) {
+                    let myOrders = Object.entries(data)
+                        .filter(([id, _]) => myOrderKeys.includes(id))
+                        .map(([_, orderObj]) => orderObj);
+
+                    if(myOrders.length > 0) {
+                        container.innerHTML = myOrders.reverse().map(o => {
+                            let imagesHTML = o.productImages && o.productImages.length > 0 
+                                ? o.productImages.map(img => `<img src="${img}" class="w-10 h-10 object-cover rounded border">`).join('')
+                                : `<img src="${o.img || 'https://via.placeholder.com/40'}" class="w-10 h-10 object-cover rounded border">`;
+                            
+                            let st = (o.status || 'Pending').toString().toLowerCase().trim();
+                            let isDelivered = (st === 'delivered' || st === 'delivery received' || st === 'ডেলিভারি রিসিভ' || st === 'ডেলিভারি');
+                            
+                            let statusBg = isDelivered ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700';
+
+                            let reviewButtonsHTML = '';
+                            if (isDelivered && o.items && o.items.length > 0) {
+                                reviewButtonsHTML = `
+                                <div class="border-t pt-2 mt-2 space-y-1">
+                                    <p class="text-[10px] font-bold text-emerald-600 flex items-center gap-1">✅ ডেলিভারি সম্পন্ন! আপনার মতামত জানান:</p>
+                                    <div class="flex flex-wrap gap-1.5">
+                                        ${o.items.map(item => `
+                                            <button onclick="openDeliveredReviewModal('${item.id}', '${item.name.replace(/'/g, "\\'")}')" class="bg-pink-100 hover:bg-pink-200 text-pink-700 text-[10px] px-2.5 py-1 rounded-lg font-bold shadow-sm transition">
+                                                ✍️ ${item.name} - রিভিউ দিন
+                                            </button>
+                                        `).join('')}
+                                    </div>
+                                </div>`;
+                            }
+
+                            return `
+                            <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-pink-100 text-xs space-y-2">
+                                <div class="flex justify-between items-center border-b pb-1.5">
+                                    <span class="text-gray-400 text-[10px] font-medium">${o.time}</span>
+                                    <span class="px-2.5 py-0.5 rounded-full font-bold ${statusBg}">${o.status || 'Pending'}</span>
+                                </div>
+                                <div class="flex gap-2 overflow-x-auto py-1">${imagesHTML}</div>
+                                <p class="font-bold text-gray-800">${o.productName}</p>
+                                ${o.otp ? `<p class="text-[11px] text-pink-600 font-bold">🔐 ডেলিভারি কোড (OTP): ${o.otp}</p>` : ''}
+                                <div class="flex justify-between text-gray-600 border-t pt-1 font-semibold">
+                                    <span>মোট প্রদেয় মূল্য:</span>
+                                    <span class="text-pink-600 font-bold text-sm">৳${o.grandTotal || o.totalPrice}</span>
+                                </div>
+                                ${reviewButtonsHTML}
+                            </div>`;
+                        }).join('');
+                    } else {
+                        container.innerHTML = `<p class="text-center text-gray-400 py-6 text-xs">আপনার কোনো আগের অর্ডার পাওয়া যায়নি।</p>`;
+                    }
+                } else {
+                    container.innerHTML = `<p class="text-center text-gray-400 py-6 text-xs">ডেটাবেসে কোনো অর্ডার পাওয়া যায়নি।</p>`;
+                }
+            });
+        }
+
+        function filterProducts(query) {
+            if (!window.allProducts) return;
+            let filter = query.toLowerCase().trim();
+            let filtered = window.allProducts.filter(p => p.name.toLowerCase().includes(filter) || (p.barcode && p.barcode.toLowerCase().includes(filter)));
+            renderCustomerProducts(filtered);
+        }
+
+        function searchByImage(event) {
+            let file = event.target.files[0];
+            if (!file) return;
+            alert("গ্যালারি থেকে ছবি সিলেক্ট করা হয়েছে! প্রডাক্ট ফিল্টার করা হচ্ছে...");
+            if (window.allProducts && window.allProducts.length > 0) {
+                renderCustomerProducts(window.allProducts);
+            }
+        }
+
+        function filterCategory(catName) {
+            if (!window.allProducts) return;
+            activeCategory = catName;
+            window.activeCategory = catName;
+
+            if (catName === 'সব') {
+                renderCustomerProducts(window.allProducts);
+            } else {
+                let filtered = window.allProducts.filter(p => p.cat && p.cat.includes(catName));
+                renderCustomerProducts(filtered);
+            }
+        }
+
+        function shareAppStore() {
+            let shopName = window.shopSettings?.shopName || "রোজা কসমেটিক";
+            let customText = window.shopSettings?.shareText || `${shopName} থেকে আপনার পছন্দের পণ্যগুলো দেখতে ও অর্ডার করতে ভিজিট করুন:`;
+            let customLink = window.shopSettings?.shareLink || window.location.href;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: shopName,
+                    text: customText,
+                    url: customLink,
+                }).catch(() => {});
+            } else {
+                let fullText = `${customText}\n${customLink}`;
+                navigator.clipboard.writeText(fullText);
+                alert("শপের লিংক ও বিবরণ কপি হয়ে গেছে!");
+            }
+        }
+    </script>
+</body>
+</html>
